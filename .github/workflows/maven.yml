@@ -9,17 +9,21 @@ on:
   pull_request:
     branches: [ main ]
 
+
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
+  mysql:
     steps:
     - uses: actions/checkout@v2
     - uses: shogo82148/actions-setup-mysql@v1
       with:
         mysql-version: '8.0'
     - run: mysql -uroot -h127.0.0.1 -e 'SELECT version()'
+  build:
+    needs: mysql
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
     - name: Set up JDK 11
       uses: actions/setup-java@v2
       with:
